@@ -1,6 +1,29 @@
-import { Form } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
+import { Form, useParams, useLoaderData } from "react-router-dom";
 
 export default function Contact() {
+
+
+let { contactId } = useParams();
+const [data, setData] = useState()
+// const { contacts } = useLoaderData();
+
+useEffect( () => {
+      fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => response.json())
+      .then(json => {
+        //contacts = json;
+        const res = json.filter(el => el.id === contactId);
+        console.log(res, '');
+
+        setData();
+      });
+    console.log(contactId, 'contactID');
+    // console.log(contacts, 'contacts');
+}, [])
+
+console.log(contactId, "====");
   const contact = {
     first: "Your",
     last: "Name",
