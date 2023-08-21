@@ -6,12 +6,16 @@ export async function getContacts(query) {
 
   // tao ra một kết nối giả đến server để lấy dữ liệu
   await fakeNetwork(`getContacts:${query}`);
-
+  // tao ra một danh sách localforage và lưu ở dưới indexdb
   let contacts = await localforage.getItem("contacts");
+  // kiêm tra xem nếu mảng contatcs có dữ liệu chưa nếu chưa có thì trả về mảng rỗng
   if (!contacts) contacts = [];
+// biến query kiêm tra xem người dùng có tìm kiếm với từ khoá với điều kiện tìm thoả
+// mãn một trong hai là last và first
   if (query) {
     contacts = matchSorter(contacts, query, { keys: ["first", "last"] });
   }
+  // trả về một danh sach đã được xắp xếp theo last và ngày khởi tạo
   return contacts.sort(sortBy("last", "createdAt"));
 }
 
@@ -34,16 +38,21 @@ export async function createContact() {
 export async function getContact(id) {
   await fakeNetwork(`contact:${id}`);
   let contacts = await localforage.getItem("contacts");
-  let contact = contacts.find(contact => contact.id === id);
+  let contact = contacts?.find(contact => contact.id === id);
   return contact ?? null;
 }
 
 export async function updateContact(id, updates) {
   await fakeNetwork();
+  // lấy ra một danh sách contacts
   let contacts = await localforage.getItem("contacts");
+  // tìm object contatc với id tương ứng trong list contact bên trên
   let contact = contacts.find(contact => contact.id === id);
+  // nếu chưa có thì in ra lỗi
   if (!contact) throw new Error("No contact found for", id);
+  // nếu tìm được thì gán contact tìm được bằng cái object updates mà mình mình thêm vào form khi nãy
   Object.assign(contact, updates);
+  // thực hiện set lại giá trị mảng contacs
   await set(contacts);
   return contact;
 }
