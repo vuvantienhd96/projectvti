@@ -17,6 +17,10 @@ import EditContact from "./routes/edit";
 import {action as destroyAction } from './routes/destroy';
 import Index from "./routes";
 
+// data res
+import DataRes from "./component/routes/dataRes";
+import DataEditComponent from "./component/routes/dataEdit";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -42,7 +46,16 @@ const router = createBrowserRouter([
         path: "contacts/:contactId/destroy",
         action: destroyAction,
       },
+      {
+        path: "data",
+        element: <DataRes />
+      },
+      {
+        path: "data/dataDeatail/:dataId",
+        element: <DataEditComponent />
+      }
     ],
+
   },
   // {
   //   path: "contacts/:contactId",

@@ -11,7 +11,7 @@ export async function loader() {
 export async function action() {
   const contact = await createContact();
   return redirect(`/contacts/${contact.id}/edit`);
- // return { contact };
+  // return { contact };
 }
 
 
@@ -50,7 +50,13 @@ export default function Root() {
             <button type="submit">New</button>
           </Form>
         </div>
-        
+        <div className="data-res">
+          <h4 style={{ color: 'blue' }}>
+            <NavLink to={`data`}>
+            click me send data
+            </NavLink>
+          </h4>
+        </div>
         <nav>
           {contacts.length ? (
             <ul>
@@ -62,12 +68,12 @@ export default function Root() {
                       isActive
                         ? "active"
                         : isPending
-                        ? "pending"
-                        : ""
+                          ? "pending"
+                          : ""
                     }
                   >
                     {/* other code */}
-                  
+
                     {contact.first || contact.last ? (
                       <>
                         {contact.first} {contact.last}
@@ -88,8 +94,8 @@ export default function Root() {
         </nav>
       </div>
       <div id="detail" className={
-          navigation.state === "loading" ? "loading" : ""
-        }>
+        navigation.state === "loading" ? "loading" : ""
+      }>
         <Outlet />
       </div>
     </>
