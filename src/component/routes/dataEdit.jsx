@@ -1,15 +1,40 @@
 import axios from "axios";
 import * as React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Form, Navigate, redirect, useParams } from 'react-router-dom';
 import { envApi } from "../../environtment";
 
+import { Button, Divider, Space, notification } from 'antd';
+import { Context } from './../../routes/root';
+
+// redirect data
+import { useNavigate } from "react-router-dom";
+
 import { useRef } from 'react';
+
+import { ContextValue } from "./contexValue";
 
 export default function DataEditComponent() {
 
     const [contact, setContact] = useState({ name: '', address: '', avatar: '', phone: '' });
     const paramUrl = useParams('dataId');
+
+    // const theme = useContext(Context);
+
+
+
+    const navigate = useNavigate();
+
+    // khai bao context khoi tao 
+    const [api, contextHolder] = notification.useNotification();
+    // khoi tao mở ra thông báo lấy dữ liệu từ contex
+    const openNotification = (placement) => {
+        api.info({
+            message: `Notification ${placement}`,
+            description: <Context.Consumer>{({ name, file }) => `Hello, ${name} - ${file}!`}</Context.Consumer>,
+            placement,
+        });
+    };
 
     // kahi bao input ref name
     const inputRefName = useRef(null);
@@ -19,14 +44,14 @@ export default function DataEditComponent() {
 
     React.useEffect(() => {
         // call api get lay ra chi tiet cua item user data
-        if(paramUrl?.dataId){
-         axios.get(envApi+`/${paramUrl?.dataId}`).then(res => setContact(res.data));
+        if (paramUrl?.dataId) {
+            axios.get(envApi + `/${paramUrl?.dataId}`).then(res => setContact(res.data));
         }
     }, []);
 
-    const handlePostData =   async() => {
+    const handlePostData = async () => {
         // lay name tuong ung khi nhap
-            console.log('handlePostData', inputRefName.current.value);
+        console.log('handlePostData', inputRefName.current.value);
         // btvn kiem tra du lieu dung dang so hay bat buoc nhap chua thi moi gui api
         const dataPost = {
             name: inputRefName.current.value,
@@ -36,17 +61,28 @@ export default function DataEditComponent() {
         }
 
         // call api
-       await axios.put(envApi+`/${paramUrl?.dataId}`, dataPost).then(res => {
+        await axios.put(envApi + `/${paramUrl?.dataId}`, dataPost).then(res => {
             console.log('oke');
-
+        }).then ( () => {
+            openNotification('topLeft');
+        }).then(() => {
+            setTimeout(() => {
+                navigate('/data');
+            }, 3000);
         }).catch(err => console.log(err, 'opp'));
-
-        return redirect("/data");
+        //debugger;
+        //redirect("/data");
+        
+        return;
 
     }
 
     return (
         <>
+            {contextHolder}
+
+            <ContextValue></ContextValue>
+            
             <Form id="contact-form">
                 <p>
                     <span>Name</span>
@@ -95,6 +131,8 @@ export default function DataEditComponent() {
                     <button type="button">Cancel</button>
                 </p>
             </Form>
+
+            
         </>
     )
 } 

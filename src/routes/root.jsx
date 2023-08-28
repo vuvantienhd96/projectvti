@@ -2,6 +2,9 @@
 import { Outlet, Link, useLoaderData, Form, redirect, NavLink, useNavigation } from "react-router-dom";
 import { getContacts, createContact } from "../contacts";
 
+import React, { useMemo } from 'react';
+
+
 
 export async function loader() {
   const contacts = await getContacts();
@@ -15,8 +18,24 @@ export async function action() {
 }
 
 
+// khoi tao gia tri luu giu contex name ban dau
+// noi luu tru ngoai root khoi tao
+export const Context = React.createContext(null);
+
+
 export default function Root() {
   const { contacts } = useLoaderData();
+
+
+  // khai bao useMemo
+  const contextValue = useMemo(
+    () => ({
+      name: 'Ant Design',
+      file: 'zip, rar, 7z'
+    }),
+    [],
+  );
+
 
   // kiêm tra xem đã điều hướng loading được dữ liệu lên hết chưa
   const navigation = useNavigation();
@@ -24,7 +43,7 @@ export default function Root() {
 
   console.log('contacts', contacts);
   return (
-    <>
+    <Context.Provider value={contextValue}>
       <div id="sidebar">
         <h1>React Router Contacts</h1>
         <div>
@@ -53,7 +72,7 @@ export default function Root() {
         <div className="data-res">
           <h4 style={{ color: 'blue' }}>
             <NavLink to={`data`}>
-            click me send data
+              click me send data
             </NavLink>
           </h4>
         </div>
@@ -98,6 +117,6 @@ export default function Root() {
       }>
         <Outlet />
       </div>
-    </>
+    </Context.Provider>
   );
 }
