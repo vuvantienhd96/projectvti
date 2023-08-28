@@ -49,6 +49,9 @@ export default function DataEditComponent() {
         }
     }, []);
 
+    const handleCancel = () => {
+        navigate('/data');
+    }
     const handlePostData = async () => {
         // lay name tuong ung khi nhap
         console.log('handlePostData', inputRefName.current.value);
@@ -128,7 +131,7 @@ export default function DataEditComponent() {
                 </label>
                 <p>
                     <button type="button" onClick={handlePostData}>Save</button>
-                    <button type="button">Cancel</button>
+                    <button type="button" onClick={handleCancel}>Cancel</button>
                 </p>
             </Form>
 
