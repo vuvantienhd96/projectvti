@@ -44,7 +44,6 @@ export default function Root() {
   console.log('contacts', contacts);
   return (
     <Context.Provider value={contextValue}>
-      test ===== setIsModalOpen
       <div id="sidebar">
         <h1>React Router Contacts</h1>
         <div>
