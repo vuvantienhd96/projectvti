@@ -69,6 +69,14 @@ export default function Root() {
             <button type="submit">New</button>
           </Form>
         </div>
+        <ul>
+        <li>
+          <Link to="/">Public Page</Link>
+        </li>
+        <li>
+          <Link to="/protected">Protected Page</Link>
+        </li>
+      </ul>
         <div className="data-res">
           <h4 style={{ color: 'blue' }}>
             <NavLink to={`data`}>
@@ -120,3 +128,4 @@ export default function Root() {
     </Context.Provider>
   );
 }
+
