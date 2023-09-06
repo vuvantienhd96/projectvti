@@ -45,7 +45,6 @@ export default function Root() {
   return (
     <Context.Provider value={contextValue}>
 
-      simple tester
       <div id="sidebar">
         <h1>React Router Contacts</h1>
         <div>
