@@ -21,10 +21,18 @@ import Index from "./routes";
 import DataRes from "./component/routes/dataRes";
 import DataEditComponent from "./component/routes/dataEdit";
 
+// private
+import RequireAuth from "./auth/RequireAuth";
+import { fakeAuthProvider } from "./auth/auth";
+import RegisterAndLogin from "./auth/RegisterAndLogin";
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    element: 
+    <RequireAuth>
+      <Root />
+    </RequireAuth>,
     errorElement: <ErrorPage />,
     // call và load data từ bên contact
     loader: rootLoader,
@@ -57,18 +65,51 @@ const router = createBrowserRouter([
     ],
 
   },
-  // {
-  //   path: "contacts/:contactId",
-  //   element: <Contact />,
-  // },
   {
-    path: "/hello",
-    element: <>test sample</>
+    path: "/login",
+    element: <RegisterAndLogin />
   }
+
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );
+
+
+let AuthContext = React.createContext(null);
+
+export const useAuth = () => {
+  return React.useContext(AuthContext);
+}
+
+function AuthProvider({ children }) {
+
+  // user kieem tra xem nguoi dung login chua
+  let [user, setUser] = React.useState(null);
+
+  let signin = (newUser, callback) => {
+    return fakeAuthProvider.signin(() => {
+      setUser(newUser.user.email);
+      localStorage.setItem('tokenUser',  newUser._tokenResponse.idToken);
+      localStorage.setItem('user',  newUser.user.email);
+      callback;
+    });
+  };
+
+  let signout = (callback) => {
+    return fakeAuthProvider.signout(() => {
+      setUser(null);
+      localStorage.clear();
+      callback;
+    });
+  };
+
+  let value = { user, signin, signout };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}

@@ -4,6 +4,8 @@ import { getContacts, createContact } from "../contacts";
 
 import React, { useMemo } from 'react';
 
+import { useAuth } from './../main';
+
 
 
 export async function loader() {
@@ -25,7 +27,7 @@ export const Context = React.createContext(null);
 
 export default function Root() {
   const { contacts } = useLoaderData();
-
+  let authStore = useAuth();
 
   // khai bao useMemo
   const contextValue = useMemo(
@@ -36,17 +38,24 @@ export default function Root() {
     [],
   );
 
+ 
+
 
   // kiêm tra xem đã điều hướng loading được dữ liệu lên hết chưa
   const navigation = useNavigation();
+  console.log('authStore', authStore);
+  const user = localStorage.getItem('user');
 
+  const logout = () => {
+    authStore.signout();
+    navigation('/');
+  }
 
-  console.log('contacts', contacts);
   return (
     <Context.Provider value={contextValue}>
 
       <div id="sidebar">
-        <h1>React Router Contacts</h1>
+        <h1 onClick={() => logout()}>Logout</h1>
         <div>
           <form id="search-form" role="search">
             <input
@@ -69,6 +78,9 @@ export default function Root() {
           <Form method="post">
             <button type="submit">New</button>
           </Form>
+        </div>
+        <div className="data-res">
+          <h5>{user ? `Xin chao ${user} !` : ''}</h5>
         </div>
         <div className="data-res">
           <h4 style={{ color: 'blue' }}>
