@@ -12,6 +12,7 @@ import { envApi } from "../../environtment";
 
 import { useSelector, useDispatch } from 'react-redux';
 import {updateText} from './../../counter/counterSlice';
+import {updateBg} from './../../counter/bgslice';
 
 
 export default function DataComponent() {
@@ -38,6 +39,14 @@ export default function DataComponent() {
     const handleUpdateStore = (e) => {
         console.log(value, "adda");
         dispatch(updateText(value));
+    }
+
+    const handleBg = () => {
+        dispatch(updateBg('green'));
+    }
+
+    const handleBg2 = () => {
+        dispatch(updateBg('red'));
     }
 
     useEffect(() => {
@@ -145,6 +154,9 @@ export default function DataComponent() {
                     <input name="name" value={value} onChange={(e) => setValue(e.target.value)}/>
                     <button type="button" onClick={(e) => handleUpdateStore(e)}>handle click</button>
                 </form>
+
+                <button type="button" onClick={(e) => handleBg(e)}>change Color green</button>
+                <button type="button" onClick={(e) => handleBg2(e)}>change Color red</button>
             </Modal>
 
             <Modal title="model confirm" open={isModalOpenDelete} onOk={handleOkeDelete}

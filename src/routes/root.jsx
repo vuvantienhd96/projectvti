@@ -6,6 +6,8 @@ import React, { useMemo } from 'react';
 
 import { useAuth } from './../main';
 
+import { useSelector } from 'react-redux';
+
 
 
 export async function loader() {
@@ -51,12 +53,15 @@ export default function Root() {
     navigation('/');
   }
 
+   // lay ra gia tri tu store
+   const bg = useSelector((state) => state.bg.backgroundColor);
+
   return (
     <Context.Provider value={contextValue}>
 
       <div id="sidebar">
         <h1 onClick={() => logout()}>Logout</h1>
-        <div>
+        <div className={bg}>
           <form id="search-form" role="search">
             <input
               id="q"
