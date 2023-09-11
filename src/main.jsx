@@ -5,19 +5,20 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import "./index.css";
-import Root, { loader as rootLoader , action as rootAction,
+import Root, {
+  loader as rootLoader, action as rootAction,
 } from "./routes/root";
 import ErrorPage from "./error-page";
-import Contact, {loader as contactLoader} from "./routes/contact";
+import Contact, { loader as contactLoader } from "./routes/contact";
 
-import {action as editAction } from "./routes/edit";
+import { action as editAction } from "./routes/edit";
 
-import {action as postAction } from "./routes/create";
+import { action as postAction } from "./routes/create";
 
 import EditContact from "./routes/edit";
 import CreateContact from './routes/create';
 
-import {action as destroyAction } from './routes/destroy';
+import { action as destroyAction } from './routes/destroy';
 import Index from "./routes";
 
 // data res
@@ -30,13 +31,17 @@ import { fakeAuthProvider } from "./auth/auth";
 import RegisterAndLogin from "./auth/RegisterAndLogin";
 import DataCreateComponent from './component/routes/dataCreate';
 
+// import redux
+import store from './store'
+import { Provider } from 'react-redux'
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: 
-    <RequireAuth>
-      <Root />
-    </RequireAuth>,
+    element:
+      <RequireAuth>
+        <Root />
+      </RequireAuth>,
     errorElement: <ErrorPage />,
     // call và load data từ bên contact
     loader: rootLoader,
@@ -88,9 +93,13 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+  {/* redux */}
+    <Provider store={store}>
+      {/* context api */}
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </Provider>
   </React.StrictMode>
 );
 
@@ -109,8 +118,8 @@ function AuthProvider({ children }) {
   let signin = (newUser, callback) => {
     return fakeAuthProvider.signin(() => {
       setUser(newUser.user.email);
-      localStorage.setItem('tokenUser',  newUser._tokenResponse.idToken);
-      localStorage.setItem('user',  newUser.user.email);
+      localStorage.setItem('tokenUser', newUser._tokenResponse.idToken);
+      localStorage.setItem('user', newUser.user.email);
       callback;
     });
   };
