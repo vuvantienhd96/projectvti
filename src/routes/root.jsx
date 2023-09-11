@@ -89,6 +89,13 @@ export default function Root() {
             </NavLink>
           </h4>
         </div>
+        <div className="data-res">
+          <h4 style={{ color: 'blue' }}>
+            <NavLink to={`dataCreate`}>
+              click me create new Data
+            </NavLink>
+          </h4>
+        </div>
         <nav>
           {contacts.length ? (
             <ul>
