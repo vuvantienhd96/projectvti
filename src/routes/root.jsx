@@ -84,9 +84,9 @@ export default function Root() {
             <button type="submit">New</button>
           </Form>
         </div>
-        <div className="data-res">
+        {/* <div className="data-res">
           <h5>{user ? `Xin chao ${user} !` : ''}</h5>
-        </div>
+        </div> */}
         <div className="data-res">
           <h4 style={{ color: 'blue' }}>
             <NavLink to={`data`}>
