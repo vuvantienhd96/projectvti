@@ -11,9 +11,9 @@ import {
 import { Card, Space, Row, Col } from 'antd';
 
 import './app.css';
-import { getAuth, createUserWithEmailAndPassword , signInWithEmailAndPassword} from "firebase/auth";
-import {database} from './../firebaseConfig';
-import {useAuth} from './../main';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { database } from './../firebaseConfig';
+import { useAuth } from './../main';
 
 function RegisterAndLogin() {
 
@@ -25,7 +25,7 @@ function RegisterAndLogin() {
     let authStore = useAuth();
 
     const handleSubmit = (e, type) => {
-        
+
         // ngan reload lai trang, submit form
         e.preventDefault();
         const email = e.target.email.value;
@@ -33,38 +33,44 @@ function RegisterAndLogin() {
         if (type == "signup") {
             // goi ham firebase tao user dang ky
             // goi api dang nhap, dang ku
-          createUserWithEmailAndPassword(database, email, password)
-            .then((data) => {
-              console.log(data, "authData");
-              // auth.signin()
-            //   history("/data");
-              alert('dang ki thanh cong!');
-            })
-            .catch((err) => {
-              console.log(err, "==========")
-              setLogin(true);
-            });
+            createUserWithEmailAndPassword(database, email, password)
+                .then((data) => {
+                    console.log(data, "authData");
+                    // auth.signin()
+                    //   history("/data");
+                    alert('dang ki thanh cong!');
+                })
+                .catch((err) => {
+                    console.log(err, "==========")
+                    setLogin(true);
+                });
         } else {
             // goi ham signin dang nhap
-          signInWithEmailAndPassword(database, email, password)
-            .then((data) => {
-              console.log(data, "authData");
-              authStore.signin(data, navigate("/", { replace: true }));
-            })
-            .catch((err) => {
-                console.log(err, "==========")
-            });
+            signInWithEmailAndPassword(database, email, password)
+                .then((data) => {
+                    console.log(data, "authData");
+                    authStore.signin(data, navigate("/", { replace: true }));
+                })
+                .catch((err) => {
+                    console.log(err, "==========")
+                });
         }
-      };
+    };
 
     const handleReset = () => {
         history("/reset");
     }
 
     return (
+        <Row>
+            <Col span={16}>
+
+            </Col>
+
+            <Col span={10}>
                 <Space direction="vertical" size={16}>
-                    <Card extra={<a href="#">More</a>} style={{ width: 300 }}>
-                        <div className="App">
+                    <Card extra={<a href="#">More</a>}>
+                        <div className="">
                             {/* Registration and login Screen */}
                             <div className="row">
                                 <div
@@ -93,6 +99,9 @@ function RegisterAndLogin() {
                         </div>
                     </Card>
                 </Space>
+            </Col>
+        </Row>
+
     );
 }
 

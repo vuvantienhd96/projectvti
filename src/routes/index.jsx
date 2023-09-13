@@ -29,8 +29,7 @@ export default function Index() {
           </section>
         </Col>
       </Row>
-
-      
+      <div style={{paddingTop: '10px'}}></div>
         <Slice />
     </>
   );
